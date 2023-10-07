@@ -50,7 +50,7 @@ export class StatsTableComponent {
     this.toYear = this.validateYear(toYear);
     this.regionId = this.validateYear(regionId);
     // Fetch stats
-    this.getStats();
+    if (!this.showError) this.getStats();
   }
 
   // Triggered when user moves to the next page
