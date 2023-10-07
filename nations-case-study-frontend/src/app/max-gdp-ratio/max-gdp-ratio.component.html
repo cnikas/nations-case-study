@@ -1,0 +1,17 @@
+<h2>Max GDP Ratio</h2>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Country code 3</th>
+    <th>Year</th>
+    <th>Population</th>
+    <th>GDP</th>
+  </tr>
+  <tr *ngFor="let stat of stats">
+    <td>{{ stat.country.name }}</td>
+    <td>{{ stat.country.countryCode3 }}</td>
+    <td>{{ stat.year }}</td>
+    <td>{{ stat.population }}</td>
+    <td>{{ stat.gdp }}</td>
+  </tr>
+</table>

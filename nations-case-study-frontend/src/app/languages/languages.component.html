@@ -1,0 +1,6 @@
+<h2>Languages for country: {{ country.name }}</h2>
+<ul>
+  <li *ngFor="let cl of countryLanguages">
+      Language: {{ cl.language.language }}, Official: {{ cl.official }}
+  </li>
+</ul>

@@ -1,0 +1,45 @@
+<h2>Stats Table</h2>
+
+<label for="region">Region:</label>
+
+<div>
+  <select #region id="region">
+    <option></option>
+    <option *ngFor="let region of regions" value="{{ region.regionId }}">
+      {{ region.name }}
+    </option>
+  </select>
+  <label for="fromYear">From Year:</label>
+  <input #fromYear id="fromYear" type="text" />
+  <label for="toYear">To Year:</label>
+  <input #toYear id="toYear" type="text" />
+  <button
+    type="button"
+    (click)="filter(region.value, fromYear.value, toYear.value)"
+  >
+    Filter
+  </button>
+</div>
+<table>
+  <tr>
+    <th>Continent</th>
+    <th>Region</th>
+    <th>Country</th>
+    <th>Year</th>
+    <th>Population</th>
+    <th>GDP</th>
+  </tr>
+  <tr *ngFor="let stat of stats | slice : 0 : 10">
+    <td>{{ stat.country.region.continent.name }}</td>
+    <td>{{ stat.country.region.name }}</td>
+    <td>{{ stat.country.name }}</td>
+    <td>{{ stat.year }}</td>
+    <td>{{ stat.population }}</td>
+    <td>{{ stat.gdp }}</td>
+  </tr>
+</table>
+<div>Page: {{ page }}</div>
+<button [disabled]="previousDisabled" (click)="previousPage()">
+  Previous Page
+</button>
+<button [disabled]="nextDisabled" (click)="nextPage()">Next Page</button>
