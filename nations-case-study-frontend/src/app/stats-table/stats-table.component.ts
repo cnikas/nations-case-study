@@ -17,12 +17,13 @@ export class StatsTableComponent {
   toYear?: number;
   previousDisabled: boolean = true;
   nextDisabled: boolean = false;
+  showError: boolean = false;
 
   constructor(private countryService: CountryService) {}
 
   ngOnInit(): void {
     this.getRegions();
-    this.getCountries();
+    this.getStats();
   }
 
   getRegions(): void {
@@ -31,7 +32,7 @@ export class StatsTableComponent {
       .subscribe((regions) => (this.regions = regions));
   }
 
-  getCountries(): void {
+  getStats(): void {
     this.countryService
       .getCountryStats(this.page, this.regionId, this.fromYear, this.toYear)
       .subscribe((stats) => {
@@ -42,34 +43,39 @@ export class StatsTableComponent {
 
   filter(regionId?: string, fromYear?: string, toYear?: string): void {
     this.page = 1;
+    // Reset error message;
+    this.showError=false;
     // If filtering attributes are present, update them
-    if (fromYear || fromYear == '') {
-      this.fromYear = parseInt(fromYear) || undefined;
-    }
-    if (toYear || toYear == '') {
-      this.toYear = parseInt(toYear) || undefined;
-    }
-    if (regionId || regionId == '') {
-      this.regionId = parseInt(regionId) || undefined;
-    }
-    this.getCountries();
+    this.fromYear = this.validateYear(fromYear);
+    this.toYear = this.validateYear(toYear);
+    this.regionId = this.validateYear(regionId);
+    // Fetch stats
+    this.getStats();
   }
 
   // Triggered when user moves to the next page
   nextPage(): void {
     this.page++;
-    this.getCountries();
+    this.getStats();
   }
 
   // Triggered when user moves to the previous page
   previousPage(): void {
     this.page--;
-    this.getCountries();
+    this.getStats();
   }
 
   // Triggered when new data is fetched to enable or disable buttons
   updateButtonStatus(): void {
     this.previousDisabled = this.page <= 1;
     this.nextDisabled = this.stats.length <= 10;
+  }
+
+  // Valid years are undefined, the empty string, or an integer
+  validateYear(year?: string) :number | undefined {
+    if (year == undefined || year == '') return undefined
+    if(/^-?\d+$/.test(year)) return Number(year);
+    this.showError = true;
+    return undefined;
   }
 }
